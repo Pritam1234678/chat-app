@@ -1,0 +1,6 @@
+com\example\chatapp\controller\FileUploadController.class
+com\example\chatapp\controller\ChatController.class
+com\example\chatapp\model\ChatMessage$MessageType.class
+com\example\chatapp\config\WebSocketConfig.class
+com\example\chatapp\model\ChatMessage.class
+com\example\chatapp\ChatAppApplication.class

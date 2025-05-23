@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 min-h-screen flex items-center justify-center transition-colors duration-300">
+    <div id="chat-container" class="w-full max-w-4xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-4 sm:p-6 m-2 sm:m-4 flex flex-col">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 dark:text-white">Chat Room</h1>
+            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                <svg id="sun-icon" class="w-5 h-5 sm:w-6 sm:h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <svg id="moon-icon" class="w-5 h-5 sm:w-6 sm:h-6 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            </button>
+        </div>
+        <div id="chat-box" class="flex-1 h-80 sm:h-96 overflow-y-auto bg-gray-50 dark:bg-gray-700 rounded-xl p-3 sm:p-4 mb-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800"></div>
+        <div id="input-container" class="flex flex-col gap-3 sm:gap-4">
+            <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
+                <input type="text" id="username" placeholder="Enter your username" class="flex-1 p-2 sm:p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm sm:text-base" />
+                <div class="flex gap-2 sm:gap-3 w-full sm:w-auto">
+                    <button onclick="connect()" class="flex-1 sm:flex-none px-4 py-2 sm:px-5 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition text-sm sm:text-base">Join Chat</button>
+                    <button onclick="leaveChat()" id="leave-chat" class="flex-1 sm:flex-none px-4 py-2 sm:px-5 sm:py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition text-sm sm:text-base" disabled>Leave Chat</button>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-3">
+                <input type="text" id="message" placeholder="Type a message" disabled class="flex-1 p-2 sm:p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm sm:text-base" />
+                <button onclick="sendMessage()" disabled class="px-4 py-2 sm:px-5 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition text-sm sm:text-base">Send</button>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-3">
+                <label class="px-4 py-2 sm:px-5 sm:py-3 bg-green-600 text-white rounded-lg cursor-pointer hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition text-sm sm:text-base">
+                    <span>Upload Photo</span>
+                    <input type="file" id="photo" accept="image/*" class="hidden" onchange="sendPhoto()" disabled />
+                </label>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            document.getElementById('sun-icon').classList.toggle('hidden');
+            document.getElementById('moon-icon').classList.toggle('hidden');
+        });
+    </script>
+    <script src="/app.js"></script>
+</body>
+</html>
