@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: spring-chat-app
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    port: 8080
